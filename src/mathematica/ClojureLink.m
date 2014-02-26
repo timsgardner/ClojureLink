@@ -58,21 +58,21 @@ getStdLink
 Begin["`Private`"]
 
 
-$ClojureLinkDirectory="/Work/ClojureLink"
+$ClojureLinkDirectory="/Users/timothygardner/code/ClojureLink"
 
 
 $JavaPath:=StringJoin@Riffle[Flatten@{
 ToFileName[{$InstallationDirectory,"SystemFiles","Links","JLink"},"JLink.jar"],
-"/Work/ClojureLink/ClojureLink-1.0.0-SNAPSHOT.jar",
-FileNames["/Work/ClojureLink/lib/*"]
+"/Users/timothygardner/code/ClojureLink/ClojureLink-1.0.0-SNAPSHOT.jar",
+FileNames["/Users/timothygardner/code/ClojureLink/lib/*"]
 },":"]
 
 
 GetClassPath[home_,paths_]:=StringJoin@@Riffle[Flatten@{
 ToFileName[{$InstallationDirectory,"SystemFiles","Links","JLink"},"JLink.jar"],
-"/Work/ClojureLink/ClojureLink-1.0.0-SNAPSHOT.jar",
+"/Users/timothygardner/code/ClojureLink/ClojureLink-1.0.0-SNAPSHOT.jar",
 paths,
-FileNames["/Work/ClojureLink/lib/*"]
+FileNames["/Users/timothygardner/code/ClojureLink/lib/*"]
 },":"]
 
 
