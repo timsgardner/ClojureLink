@@ -80,6 +80,7 @@ InstallClojureLink[dir_,paths_]:={
 $ClojureLinkDirectory=dir;
 ReinstallJava[CommandLine -> "/Library/Java/Home/bin/java",JVMArguments->"-Djavax.xml.parsers.DocumentBuilderFactory=com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl -Xmx4000m -Xms4000m -Djava.library.path=/usr/local/lib/ -classpath \""<>GetClassPath[$ClojureLinkDirectory,paths]<>"\""],
 LoadJavaClass/@{"clojure.lang.Compiler","clojure.lang.RT","java.io.StringReader"},
+RT`init[],
 Compiler`load[JavaNew["java.io.StringReader",
 "(use 'ClojureLink.core)"]]}
 
@@ -111,7 +112,8 @@ SetClojureLinkAutoReplacements[notebookobj_]:=SetOptions[notebookobj,InputAutoRe
 ToClojureExpression[x_]/;JavaObjectQ[x]:=x
 
 
-ToClojureExpression[x_]:=ReturnAsJavaObject[(RT`var["ClojureLink.core","to-s-expression"])@invoke[MakeJavaExpr@(x/.y_Symbol/;JavaObjectQ[y]:>\:2024[\:2024getObjectHandler[\:2024[ClojureSymbol["com.wolfram.jlink.Install"],getStdLink[]]],getObject[SymbolName[y]]] //. {hm:{y__Rule}:>hash\:2011map[y],Times[a_,Power[b_,-1]]:>Division[a,b],Rule[a_,b_]:>Unevaluated[Sequence[a,b]]})]]
+ToClojureExpression[x_]:=
+ReturnAsJavaObject[(RT`var["ClojureLink.core","to-s-expression"])@invoke[MakeJavaExpr@(x/.y_Symbol/;JavaObjectQ[y]:>\:2024[\:2024getObjectHandler[\:2024[ClojureSymbol["com.wolfram.jlink.Install"],getStdLink[]]],getObject[SymbolName[y]]] //. {hm:{y__Rule}:>hash\:2011map[y],Times[a_,Power[b_,-1]]:>Division[a,b],Rule[a_,b_]:>Unevaluated[Sequence[a,b]]})]]
 
 
 ClojureObjectEvaluate[x_]/;JavaObjectQ[x]:=With[{res=(RT`var["ClojureLink.core","evalm"])@invoke[x]},res]

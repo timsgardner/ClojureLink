@@ -1,13 +1,11 @@
 (ns ClojureLink.core
-	(:use [clojure.contrib.string :only [replace-str]]) 
-	(:import com.wolfram.jlink.Expr)
-)
+    (:use [clojure.contrib.string :only [replace-str]])
+  (:import com.wolfram.jlink.Expr))
 
-
-(def characters {:Dot "\u2024" :Dash "\u2011" :Underscore "\u02cd" :Colon "\u0589" 
+(def characters {:Dot "\u2024" :Dash "\u2011" :Underscore "\u02cd" :Colon "\u0589"
 :Astrisk "\u204e" :Question "\u2047" :Exclamation "\u203c"})
 
-(def java-object-map)
+(def ^:dynamic *java-object-map*)
 
 (defn part [a b] (.part a b))
 
@@ -23,9 +21,9 @@
 	(reduce #(replace-str (%2 0) (%2 1) %1) s [["/" "`"] [(characters :Astrisk) "*"] [(characters :Exclamation) "!"] ["-" (characters :Dash)] ["_" (characters :Underscore)] [":" (characters :Colon)] ["." (characters :Dot)]])
 )
 
-(defn to-clojure-symbol [expr] 
-	(let [sname (.asString expr)] 
-		(cond 
+(defn to-clojure-symbol [expr]
+	(let [sname (.asString expr)]
+		(cond
 			(= sname "True") true
 			(= sname "False") false
 			(= sname "Null") nil
@@ -47,11 +45,11 @@
 		)
 	))
 
-(defn to-s-expression [expr] 
-	(let [conpart (fn [seq expr p] (conj seq (to-s-expression (part expr p))))] 
-	(cond	
-		(and (.atomQ expr) (not (.rationalQ expr))) 
-			(cond 
+(defn to-s-expression [expr]
+	(let [conpart (fn [seq expr p] (conj seq (to-s-expression (part expr p))))]
+	(cond
+		(and (.atomQ expr) (not (.rationalQ expr)))
+			(cond
 				(.symbolQ expr) (to-clojure-symbol expr)
 				(.integerQ expr) (.asInt expr)
 				(.realQ expr) (.asDouble expr)
@@ -62,11 +60,11 @@
 		(= (.asString (head expr)) "ClojureSymbol") (symbol (.asString (part expr 1)))
 		true (reverse (reduce #(conpart %1 expr (+ %2 1)) (conj '() (to-s-expression (head expr))) (range (length expr))))
 	)))
-		
-(defn to-mathematica-symbol [expr] 
-	(let [sname  (to-mathematica-symbol-name (str expr))] 
+
+(defn to-mathematica-symbol [expr]
+	(let [sname  (to-mathematica-symbol-name (str expr))]
 		(cond
-			(= sname "+") (Expr. 4 "Plus") 
+			(= sname "+") (Expr. 4 "Plus")
 			(= sname ">") (Expr. 4 "Greater")
 			(= sname ">=") (Expr. 4 "GreaterEqual")
 			(= sname "<")  (Expr. 4 "Less")
@@ -76,9 +74,9 @@
 			(empty? (re-matches #"(\w|\/|_|-|\.|:|\$)*" (str expr))) (Expr. (Expr.  4 "ClojureSymbol") (into-array Expr [(Expr. sname)]))
 			true (Expr. 4 sname)
 		)
-))		
-			
-(defn createExprSub [struct] 
+))
+
+(defn createExprSub [struct]
 	(cond
 		(= (class struct) com.wolfram.jlink.Expr) struct
 		(= struct true) (Expr. 4 "True")
@@ -96,21 +94,21 @@
 		(map? struct) (Expr. (Expr.  4 "List") (into-array Expr (map createExprSub struct)))
 		(set? struct) (Expr. (Expr.  4 "HashSet") (into-array Expr (map createExprSub struct)))
 		(seq? struct) (Expr. (Expr.  4 "List") (into-array Expr (map createExprSub struct)))
-		true (let [s (gensym)] (set! java-object-map (assoc java-object-map s struct)) (createExprSub s))
-	)	
-)	
-
-		
-
-(defn createExpr [struct] 
-	(binding [java-object-map {}] 
-		(let [resultexpr (createExprSub struct)] (object-array [(createExprSub (map first java-object-map)) (object-array (map last java-object-map)) resultexpr]) )
-	) 	
+		true (let [s (gensym)] (set! *java-object-map* (assoc *java-object-map* s struct)) (createExprSub s))
+	)
 )
 
-(defn evalm [expr] 
-	(binding [*ns* (create-ns 'user)] 
+
+
+(defn createExpr [struct]
+	(binding [*java-object-map* {}]
+		(let [resultexpr (createExprSub struct)] (object-array [(createExprSub (map first *java-object-map*)) (object-array (map last *java-object-map*)) resultexpr]) )
+	)
+)
+
+(defn evalm [expr]
+	(binding [*ns* (create-ns 'user)]
 		(let [res (eval expr)]
-			(if (ratio? res) 
+			(if (ratio? res)
 					(Expr. (Expr.  4 "Rational") (into-array Expr (map createExprSub [(numerator res) (denominator res)])))
-				res))))			
+				res))))
