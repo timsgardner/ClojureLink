@@ -1,4 +1,4 @@
-(ns ClojureLink.analysis
+(ns clj.ClojureLink.analysis
   (:require
    [clojure.jvm.tools.analyzer :as azr]
    [clojure.jvm.tools.analyzer.emit-form :as ae]

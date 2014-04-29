@@ -53,10 +53,7 @@ ampersand-attack = <#"(?<!%)&"> tokseq-H !tok-H
 
 regex-literal = <'#'> string
 
-(*this next bit is stupid and annoying and I don't understand it*)
-
 # string --------------------------------------
-(*kind of broken, for deeply nested strings. those suck*)
 
 quote-quote = #'\\\"'
 quote-char = !quote-quote #'\\.'
