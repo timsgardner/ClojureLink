@@ -1,0 +1,85 @@
+# Eliminate ambiguity by adding recursive negative lookahead at end of RHS
+
+# this breaks for strings nested beyond level 1 or so, fix when you understand parsing better
+
+# top -----------------------------------------
+
+top = tokseq-H
+
+# expression ----------------------------------
+
+expression =  atom / known-literal-H / tagged-literal
+
+<known-literal-H> = list | vector | map | set | quote-literal | character-literal | deref-literal | metadata-literal | syntax-quote-literal | function-literal | unquote-literal | unquote-splicing-literal | ignore-form-literal | var-quote-literal | argument-literal | ampersand-attack | regex-literal
+
+list = <'('> tok-H* <')'>
+vector = <'['> tok-H* <']'>
+map = <'{'> tok-H* <'}'>
+
+set = <"#{"> tok-H* <"}">
+
+quote-literal = <"'"> expression
+
+character-literal = #"\\."
+
+deref-literal = "(?<![~_])@" expression
+
+metadata-literal = <"^"> (keyword | map)
+
+syntax-quote-literal = <"`"> expression
+
+function-literal = <"#("> tokseq-H <")">
+
+unquote-literal = <"~"> !"@" expression
+
+unquote-splicing-literal = <"~@"> expression
+
+ignore-form-literal = <"#_"> expression
+
+var-quote-literal = <"#'"> name
+
+tagged-literal = <"#"> name (list | vector | map | (whitespace expression))
+
+atom = (number | string | keyword | name)
+
+number = #'[0-9]+(.[0-9]+)?(e[0-9]+(.[0-9]+)?)?'
+
+name = #"[a-zA-Z*+!\-_?]([\S&&[^\(\)\[\]\{\}\"\@\#\\]]*)"
+keyword = #':(:?)' name
+
+argument-literal = <"%"> (#'[0-9]'|'&')? !atom
+
+ampersand-attack = <#"(?<!%)&"> tokseq-H !tok-H
+
+regex-literal = <'#'> string
+
+(*this next bit is stupid and annoying and I don't understand it*)
+
+# string --------------------------------------
+(*kind of broken, for deeply nested strings. those suck*)
+
+quote-quote = #'\\\"'
+quote-char = !quote-quote #'\\.'
+string = <'"'> (quote-quote | quote-char | (!(quote-quote | quote-char) #"."))* <'"'>
+
+# comments ------------------------------------
+
+comment = #"(?m)(;.*?$)"
+
+# breaks --------------------------------------
+
+whitespace = whitespace-H
+<whitespace-H> = (nbsp-H | linebreak)+ !whitespace-H
+
+nbsp = nbsp-H
+<nbsp-H> = (comma | space | tab)+ !nbsp-H
+
+linebreak = "\n"
+comma = ","
+space = " "
+tab = #"\t"
+
+# utilities ----------------------------------
+
+<tokseq-H> = tok-H+
+<tok-H> = whitespace / comment / expression

@@ -1,0 +1,6 @@
+top = (escape-escape / word / whitespace / quote)*
+<escape-escape-H> = #'\\'+
+escape-escape = escape-escape-H !escape-escape-H
+quote = #'\"'
+word = #'\w+'
+whitespace = #'\s+'
