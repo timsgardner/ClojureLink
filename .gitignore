@@ -1,1 +1,4 @@
 /.idea/*
+/.lein-deps-sum
+/ClojureLink.iml
+/pom.xml
