@@ -23,11 +23,8 @@
 (def clojure-grammar-1
   (make-grammar "instaparse/clojure.txt"))
 
-#_(def clojure-file-1 (to-line-vec "test-files/clojure-test-1.clj"))
+(def clojure-file-1 (to-line-vec "test-files/clojure-test-1.clj"))
 
-(defn parse-clojure-file [f]
-  (let [f' (with-open [r (io/reader (io/file f))] (vec (line-seq r)))]
-    (->> f' lines-to-string (#(insta/parse clojure-grammar-1)))))
 
 (comment
   (pprint

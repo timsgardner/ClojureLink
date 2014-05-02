@@ -1,4 +1,4 @@
-(ns clj.ClojureLink.core
+(ns ClojureLink.core
     (:use [clojure.contrib.string :only [replace-str]])
   (:import com.wolfram.jlink.Expr))
 
