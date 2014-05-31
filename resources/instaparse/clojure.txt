@@ -57,10 +57,6 @@ access-literal = <"."> name
 
 # string --------------------------------------
 
-# quote-quote = #'\\\"'
-# quote-char = !quote-quote #'\\.'
-# string = <'"'> (quote-quote | quote-char | (!(quote-quote | quote-char) #"(?s)."))* <'"'>
-
 string = #"\"(\\\"|(?<!\\\")\\.|(?s).)*?\""
 
 # comments ------------------------------------
