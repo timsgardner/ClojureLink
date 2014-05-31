@@ -22,7 +22,7 @@ quote-literal = <"'"> expression
 
 character-literal = #"\\."
 
-deref-literal = "(?<![~_])@" expression
+deref-literal = #"(?<![~_])@" expression
 
 metadata-literal = <"^"> (keyword | map)
 
@@ -44,7 +44,7 @@ atom = (number | string | keyword | name)
 
 number = #'[0-9]+(.[0-9]+)?(e[0-9]+(.[0-9]+)?)?'
 
-name = #"[a-zA-Z*+!\-_?]([\S&&[^\(\)\[\]\{\}\"\@\#\\]]*)"
+name = #"[a-zA-Z*+<>!\-_?]([\S&&[^\(\)\[\]\{\}\"\@\#\\]]*)"
 keyword = #':(:?)' name
 
 argument-literal = <"%"> (#'[0-9]'|'&')? !atom
@@ -57,7 +57,7 @@ regex-literal = <'#'> string
 
 quote-quote = #'\\\"'
 quote-char = !quote-quote #'\\.'
-string = <'"'> (quote-quote | quote-char | (!(quote-quote | quote-char) #"."))* <'"'>
+string = <'"'> (quote-quote | quote-char | (!(quote-quote | quote-char) #"(?s)."))* <'"'>
 
 # comments ------------------------------------
 

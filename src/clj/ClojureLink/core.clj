@@ -1,6 +1,10 @@
 (ns ClojureLink.core
     (:use [clojure.contrib.string :only [replace-str]])
+    ;; (:require  ClojureLink.parser)
   (:import com.wolfram.jlink.Expr))
+
+;; because everything's broken:
+(load-file "/Users/timothygardner/code/ClojureLink/src/clj/ClojureLink/parser.clj")
 
 (def characters {:Dot "\u2024" :Dash "\u2011" :Underscore "\u02cd" :Colon "\u0589"
 :Astrisk "\u204e" :Question "\u2047" :Exclamation "\u203c"})
