@@ -10,7 +10,7 @@ top = tokseq-H
 
 expression =  atom / known-literal-H / tagged-literal
 
-<known-literal-H> = list | vector | map | set | quote-literal | character-literal | deref-literal | metadata-literal | syntax-quote-literal | function-literal | unquote-literal | unquote-splicing-literal | ignore-form-literal | var-quote-literal | argument-literal | ampersand-attack | regex-literal | access-literal
+<known-literal-H> = list | vector | map | set | quote-literal | character-literal | deref-literal | metadata-literal | syntax-quote-literal | function-literal | unquote-literal | unquote-splicing-literal | ignore-form-literal | var-quote-literal | argument-literal | ampersand-attack | regex-literal | access-literal | typehint
 
 list = <'('> tok-H* <')'>
 vector = <'['> tok-H* <']'>
@@ -53,7 +53,13 @@ ampersand-attack = <#"(?<!%)&"> tokseq-H !tok-H
 
 regex-literal = <'#'> string
 
-access-literal = <"."> name
+<access-literal> = dot-access | field-access
+
+dot-access = <"."> !"-" name
+
+field-access = <".-"> name
+
+typehint = <"^"> name
 
 # string --------------------------------------
 
