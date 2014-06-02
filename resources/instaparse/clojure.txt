@@ -6,9 +6,9 @@
 
 top = tokseq-H
 
-# expression ----------------------------------
+# expression-H ----------------------------------
 
-expression =  atom / known-literal-H / tagged-literal
+<expression-H> =  atom-H / known-literal-H / tagged-literal
 
 <known-literal-H> = list | vector | map | set | quote-literal | character-literal | deref-literal | metadata-literal | syntax-quote-literal | function-literal | unquote-literal | unquote-splicing-literal | ignore-form-literal | var-quote-literal | argument-literal | ampersand-attack | regex-literal | access-literal | typehint | weird-meta
 
@@ -18,38 +18,38 @@ map = <'{'> tok-H* <'}'>
 
 set = <"#{"> tok-H* <"}">
 
-weird-meta = <"#^"> expression
+weird-meta = <"#^"> expression-H
 
-quote-literal = <"'"> expression
+quote-literal = <"'"> expression-H
 
 character-literal = #"\\."
 
-deref-literal = #"(?<![~_])@" expression
+deref-literal = #"(?<![~_])@" expression-H
 
 metadata-literal = <"^"> (keyword | map)
 
-syntax-quote-literal = <"`"> expression
+syntax-quote-literal = <"`"> expression-H
 
 function-literal = <"#("> tokseq-H <")">
 
-unquote-literal = <"~"> !"@" expression
+unquote-literal = <"~"> !"@" expression-H
 
-unquote-splicing-literal = <"~@"> expression
+unquote-splicing-literal = <"~@"> expression-H
 
-ignore-form-literal = <"#_"> expression
+ignore-form-literal = <"#_"> expression-H
 
 var-quote-literal = <"#'"> name
 
-tagged-literal = <"#"> name (list | vector | map | (whitespace expression))
+tagged-literal = <"#"> name (list | vector | map | (whitespace expression-H))
 
-atom = (number | string | keyword | name)
+<atom-H> = (number | string | keyword | name)
 
 number = #'e?[0-9]+(\.[0-9]+)?'
 
 name = #"[a-zA-Z*+<>=!\-/_?]([\S&&[^\(\)\[\]\{\}\"\@\#\\]]*#?)"
 keyword = #':(:?)' name
 
-argument-literal = <"%"> (#'[0-9]'|'&')? !atom
+argument-literal = <"%"> (#'[0-9]'|'&')? !atom-H
 
 ampersand-attack = <#"(?<!%)&"> tokseq-H !tok-H
 
@@ -87,4 +87,4 @@ tab = #"\t"
 # utilities ----------------------------------
 
 <tokseq-H> = tok-H+
-<tok-H> = whitespace / comment / expression
+<tok-H> = whitespace / comment / expression-H
