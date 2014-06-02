@@ -10,13 +10,15 @@ top = tokseq-H
 
 expression =  atom / known-literal-H / tagged-literal
 
-<known-literal-H> = list | vector | map | set | quote-literal | character-literal | deref-literal | metadata-literal | syntax-quote-literal | function-literal | unquote-literal | unquote-splicing-literal | ignore-form-literal | var-quote-literal | argument-literal | ampersand-attack | regex-literal | access-literal | typehint
+<known-literal-H> = list | vector | map | set | quote-literal | character-literal | deref-literal | metadata-literal | syntax-quote-literal | function-literal | unquote-literal | unquote-splicing-literal | ignore-form-literal | var-quote-literal | argument-literal | ampersand-attack | regex-literal | access-literal | typehint | weird-meta
 
 list = <'('> tok-H* <')'>
 vector = <'['> tok-H* <']'>
 map = <'{'> tok-H* <'}'>
 
 set = <"#{"> tok-H* <"}">
+
+weird-meta = <"#^"> expression
 
 quote-literal = <"'"> expression
 
@@ -42,9 +44,9 @@ tagged-literal = <"#"> name (list | vector | map | (whitespace expression))
 
 atom = (number | string | keyword | name)
 
-number = #'[0-9]+(.[0-9]+)?(e[0-9]+(.[0-9]+)?)?'
+number = #'e?[0-9]+(\.[0-9]+)?'
 
-name = #"[a-zA-Z*+<>=!\-/_?]([\S&&[^\(\)\[\]\{\}\"\@\#\\]]*)"
+name = #"[a-zA-Z*+<>=!\-/_?]([\S&&[^\(\)\[\]\{\}\"\@\#\\]]*#?)"
 keyword = #':(:?)' name
 
 argument-literal = <"%"> (#'[0-9]'|'&')? !atom
