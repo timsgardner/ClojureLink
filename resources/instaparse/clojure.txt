@@ -10,7 +10,7 @@ top = tokseq-H
 
 <expression-H> =  atom-H / known-literal-H / tagged-literal
 
-<known-literal-H> = list | vector | map | set | quote-literal | character-literal | deref-literal | metadata-literal | syntax-quote-literal | function-literal | unquote-literal | unquote-splicing-literal | ignore-form-literal | var-quote-literal | argument-literal | ampersand-attack | regex-literal | access-literal | typehint | weird-meta
+<known-literal-H> = list | vector | map | set | quote-literal | character-literal | deref-literal | metadata-literal | syntax-quote-literal | function-literal | unquote-literal | unquote-splicing-literal | ignore-form-literal | var-quote-literal | argument-literal | ampersand-attack | regex-literal | access-literal | typehint | weird-meta | clr-type
 
 list = <'('> tok-H* <')'>
 vector = <'['> tok-H* <']'>
@@ -67,6 +67,10 @@ typehint = <"^"> name
 
 string = #"\"(\\\"|(?s).)*?\""
 
+# clr type ---------------------------------
+
+clr-type = #"\|(\|\||(?s).)*?\|"
+
 # comments ------------------------------------
 
 comment = #"(?m)(;.*?$)"
@@ -79,7 +83,7 @@ whitespace = whitespace-H
 nbsp = nbsp-H
 <nbsp-H> = (comma | space | tab)+ !nbsp-H
 
-linebreak = "\n"
+linebreak = #"\n|\r"
 comma = ","
 space = " "
 tab = #"\t"
