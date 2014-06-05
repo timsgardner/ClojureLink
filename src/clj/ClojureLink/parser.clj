@@ -40,38 +40,7 @@
 (defmulti parse-file #'parse-file-dispatch)
 
 (defmethod parse-file java.lang.String [f]
-           (->> f slurp parse-string))
+  (->> f slurp parse-string))
 
-(comment
-  (pprint
-    (->> (clojure.string/split-lines
-           (slurp "src/clj/ClojureLink/parser.clj"))
-         (take 14)
-         lines-to-string
-         (#(insta/parses clojure-grammar-1 % :total true))))
-
-  (pprint
-    (->> "(clojure.string/join \"\n\")"
-         (#(insta/parses clojure-grammar-1 % :total true))))
-
-  "\"bla\\\\\\\"\""
-
-  (pprint
-    (->>
-      "\"\\\"bla\\\\\\\\\\\\\\\"\\\"\""
-      (#(insta/parses clojure-grammar-1 % :total true))))
-
-  (pprint
-    (->>
-      "@house"
-      (#(insta/parses clojure-grammar-1 % :total true))))
-
-  (->>
-    "/Users/timothygardner/code/immutable-stack/contacts/src/clj/contacts/core.clj"
-    slurp
-    clojure.string/split-lines
-    (take 23)
-    lines-to-string
-    (#(insta/parses clojure-grammar-1 % :total true))
-    pprint))
-
+(defmethod parse-file java.io.File [f]
+  (->> f slurp parse-string))

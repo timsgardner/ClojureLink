@@ -10,7 +10,7 @@ top = tokseq-H
 
 <expression-H> =  atom-H / known-literal-H / tagged-literal
 
-<known-literal-H> = list | vector | map | set | quote-literal | character-literal | deref-literal | metadata-literal | syntax-quote-literal | function-literal | unquote-literal | unquote-splicing-literal | ignore-form-literal | var-quote-literal | argument-literal | ampersand-attack | regex-literal | access-literal | typehint | weird-meta | clr-type
+<known-literal-H> = list | vector | map | set | quote-literal | character-literal | deref-literal | metadata-literal | syntax-quote-literal | function-literal | unquote-literal | unquote-splicing-literal | ignore-form-literal | var-quote-literal | argument-literal | ampersand-attack | regex-literal | access-literal | typehint | weird-meta | constructor
 
 list = <'('> tok-H* <')'>
 vector = <'['> tok-H* <']'>
@@ -46,7 +46,7 @@ tagged-literal = <"#"> name (list | vector | map | (whitespace expression-H))
 
 number = #'e?[0-9]+(\.[0-9]+)?'
 
-name = #"[a-zA-Z*+<>=!\-/_?]([\S&&[^\(\)\[\]\{\}\"\@\#\\]]*#?)"
+name = #"[a-zA-Z*+<>=!\-/_?]([\S&&[^.\(\)\[\]\{\}\"\@\#\\]]*#?)" | clr-type-H
 keyword = #':(:?)' name
 
 argument-literal = <"%"> (#'[0-9]'|'&')? !atom-H
@@ -63,6 +63,8 @@ field-access = <".-"> name
 
 typehint = <"^"> name
 
+constructor = name "."
+
 # string --------------------------------------
 
 string = #"\"(\\\"|(?s).)*?\""
@@ -70,6 +72,7 @@ string = #"\"(\\\"|(?s).)*?\""
 # clr type ---------------------------------
 
 clr-type = #"\|(\|\||(?s).)*?\|"
+<clr-type-H> = clr-type
 
 # comments ------------------------------------
 
