@@ -46,7 +46,7 @@ tagged-literal = <"#"> name (list | vector | map | (whitespace expression-H))
 
 number = #'e?[0-9]+(\.[0-9]+)?'
 
-name = #"[a-zA-Z*+<>=!\-/_?]([\S&&[^.\(\)\[\]\{\}\"\@\#\\]]*#?)" | clr-type-H
+name =  #"\.(?!\.)|\.\.|[a-zA-Z*+<>=!\-/_?]([\S&&[^\(\)\[\]\{\}\"\@\#\\]]*[\S&&[^\(\)\[\]\{\}\"\@\#\\]]#?)?" | clr-type-H
 keyword = #':(:?)' name
 
 argument-literal = <"%"> (#'[0-9]'|'&')? !atom-H
@@ -57,13 +57,13 @@ regex-literal = <'#'> string
 
 <access-literal> = dot-access | field-access
 
-dot-access = <"."> !"-" name
+dot-access = <#"."> !"-" name
 
 field-access = <".-"> name
 
 typehint = <"^"> name
 
-constructor = name "."
+constructor = name <".">
 
 # string --------------------------------------
 
