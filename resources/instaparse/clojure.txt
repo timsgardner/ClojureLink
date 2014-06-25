@@ -30,7 +30,7 @@ metadata-literal = <"^"> (keyword | map)
 
 syntax-quote-literal = <"`"> expression-H
 
-function-literal = <"#("> tokseq-H <")">
+function-literal = <"#("> tok-H* <")">
 
 unquote-literal = <"~"> !"@" expression-H
 
