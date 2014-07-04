@@ -16,31 +16,31 @@
   (clojure.string/join "\n" lv))
 
 (defn make-grammar [path]
-  (insta/parser
-    (->> path
-         to-line-vec
-         (remove #(re-matches #"^\s*#.*" %))
-         lines-to-string)))
+  (->> path
+    to-line-vec
+    (remove #(re-matches #"^\s*#.*" %))
+    lines-to-string
+    insta/parser))
 
 ; because everything's still broken:
 (def awful-hardcoded-path-to-grammar
   "/Users/timothygardner/code/ClojureLink/resources/instaparse/clojure.txt")
 
-(def clojure-grammar
+(def ^:dynamic *clojure-grammar*
   (make-grammar awful-hardcoded-path-to-grammar))
 
-;;(def clojure-file-1 (to-line-vec "test-files/clojure-test-1.clj"))
-
-(defn parse-file-dispatch [f]
-  (type f))
-
 (defn parse-string [s]
-  (insta/parse clojure-grammar s))
+  (insta/parse *clojure-grammar* s))
 
-(defmulti parse-file #'parse-file-dispatch)
-
-(defmethod parse-file java.lang.String [f]
-  (->> f slurp parse-string))
-
-(defmethod parse-file java.io.File [f]
-  (->> f slurp parse-string))
+(defn parse-file
+  ([f]
+     (->> f slurp parse-string))
+  ([f strtln]
+     (lines-to-string
+       (subvec (to-line-vec f)
+         strtln)))
+  ([f strtln endln]
+     (lines-to-string
+       (subvec (to-line-vec f)
+         strtln
+         endln))))
