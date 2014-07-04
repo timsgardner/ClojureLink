@@ -2,3 +2,4 @@
 /.lein-deps-sum
 /ClojureLink.iml
 /pom.xml
+/.nrepl-port

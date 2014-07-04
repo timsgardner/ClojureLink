@@ -26,7 +26,7 @@
 (def awful-hardcoded-path-to-grammar
   "/Users/timothygardner/code/ClojureLink/resources/instaparse/clojure.txt")
 
-(def clojure-grammar-1
+(def clojure-grammar
   (make-grammar awful-hardcoded-path-to-grammar))
 
 ;;(def clojure-file-1 (to-line-vec "test-files/clojure-test-1.clj"))
@@ -35,7 +35,7 @@
   (type f))
 
 (defn parse-string [s]
-  (insta/parse clojure-grammar-1 s))
+  (insta/parse clojure-grammar s))
 
 (defmulti parse-file #'parse-file-dispatch)
 
