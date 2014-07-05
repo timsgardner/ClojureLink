@@ -29,6 +29,13 @@
 (def ^:dynamic *clojure-grammar*
   (make-grammar awful-hardcoded-path-to-grammar))
 
+(defmacro with-grammar [g & body]
+  `(let [g# ~g]
+     (binding [*clojure-grammar* (if (string? g#)
+                                   (make-grammar g#)
+                                   g#)]
+       ~@body)))
+
 (defn parse-string [s]
   (insta/parse *clojure-grammar* s))
 
@@ -36,11 +43,13 @@
   ([f]
      (->> f slurp parse-string))
   ([f strtln]
-     (lines-to-string
-       (subvec (to-line-vec f)
-         strtln)))
+     (parse-string
+       (lines-to-string
+         (subvec (to-line-vec f)
+           strtln))))
   ([f strtln endln]
-     (lines-to-string
-       (subvec (to-line-vec f)
-         strtln
-         endln))))
+     (parse-string
+       (lines-to-string
+         (subvec (to-line-vec f)
+           strtln
+           endln)))))
