@@ -1,6 +1,6 @@
 (* mostly from http://clojure.org/reader *)
 
-<word-H> = keyword | symbol | number | quote | character | deref | metadata | dispatch-H | syntax-quote | 
+<word-H> = keyword | symbol | number | character | literal-tag
 
 number = #"[0-9]+(?:\.[0-9]+)?(?:e[0-9]+)?"
 
@@ -10,22 +10,6 @@ keyword = #":.*"
 
 symbol = #"[\w&&[^0-9][*+!-_?/.]].*"
 
-(* metadata maps can contain arbitrary clojure forms, so this isn't the stage to handle them. Eventually that'll just be a matter of retyping [:word "^" [:map ...]] forms. For now just deal with tags. *)
+character = #"\\.*"
 
-metadata = #'^.*'
-
-<dispatch-H> = var-quote | ignore
-
-var-quote = "#'" symbol
-
-ignore = "#_"
-
-(* I dont like the next bit, it's going to make a stupid AST *)
-
-syntax-quote = '`' symbol?
-
-unquote = '~' symbol?
-
-unquote-splicing = '~@' symbol?
-
-
+literal-tag = #"#.*"

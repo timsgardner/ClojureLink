@@ -2,7 +2,7 @@ top = tok-seq-H
 
 <tok-seq-H> = (whitespace? tok-H)* whitespace?
 
-<tok-H> = comment | parenthetical-H | string | word | escaped | regex | metadata
+<tok-H> = comment | parenthetical-H | string | word | escaped | regex | metadata | macro-things-H | deref
 
 <parenthetical-H> = list | vector | map | set | function-literal
 
@@ -26,6 +26,28 @@ comment = #";.*"
 
 escaped = #'\\(\W|\w+)'
 
-word = !#'#[\s\(\)\{\}\[\]\"]|\^' #'[^;\s\(\)\{\}\[\]\"\\]+'
+word = !#"(#[\s\(\)\{\}\[\]\"_])|[\^\~\@\`\']" #'[^;\s\(\)\{\}\[\]\"\\]+'
+
+# ------------------------------------
+
+<macro-things-H> = quote | var-quote | ignore | syntax-quote | unquote | unquote-splicing 
+
+quote = "'"
+
+var-quote = "#'" 
+
+ignore = "#_"
+
+syntax-quote = '`' 
+
+unquote = '~' !'@' 
+
+unquote-splicing = '~@'
+
+# ------------------------------------
+
+deref = '@'
+ 
+# ------------------------------------
 
 whitespace = #'\s+'
