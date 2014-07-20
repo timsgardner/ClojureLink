@@ -2,7 +2,7 @@ top = tok-seq-H
 
 <tok-seq-H> = (whitespace? tok-H)* whitespace?
 
-<tok-H> = comment | parenthetical-H | string | word | escaped | regex
+<tok-H> = comment | parenthetical-H | string | word | escaped | regex | metadata
 
 <parenthetical-H> = list | vector | map | set | function-literal
 
@@ -20,10 +20,12 @@ string = #"\"(\\\"|(?s).)*?\""
 
 regex = '#' string
 
+metadata =  "^" (map | word | string)
+
 comment = #";.*"
 
 escaped = #'\\(\W|\w+)'
 
-word = !#'#[\s\(\)\{\}\[\]\"]' #'[^;\s\(\)\{\}\[\]\"\\]+'
+word = !#'#[\s\(\)\{\}\[\]\"]|\^' #'[^;\s\(\)\{\}\[\]\"\\]+'
 
 whitespace = #'\s+'
