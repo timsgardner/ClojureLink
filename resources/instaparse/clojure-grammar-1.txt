@@ -1,29 +1,27 @@
-# should have an epsilon thingum in here too
-
 top = tok-seq-H
 
 <tok-seq-H> = (whitespace? tok-H)* whitespace?
 
-<tok-H> = parenthetical-H | string | word | whitespace | comment
+<tok-H> = comment | parenthetical-H | string | word | escaped
 
 <parenthetical-H> = list | vector | map | set | function-literal
 
-list = <'('> tok-seq-H* <')'>
+list =  <'('> tok-seq-H <')'>
 
-vector = <'['> tok-seq-H* <']'>
+vector = <'['> tok-seq-H <']'>
 
-map = <'{'> tok-seq-H* <'}'>
+map = <'{'> tok-seq-H <'}'>
 
-set = <'#{'> tok-seq-H* <'}'>
+set = <'#{'> tok-seq-H <'}'>
 
-function-literal = <'#('> tok-seq-H* <')'>
+function-literal = <'#('> tok-seq-H <')'>
 
 string = #"\"(\\\"|(?s).)*?\""
 
-# comment = #"(?m)(;.*$)"
-
 comment = #";.*"
 
-word = #'[^\s\(\)\{\}\[\]\"]+'
+escaped = #'\\(\W|\w+)'
+
+word = !#'#[\s\(\)\{\}\[\]]' #'[^;\s\(\)\{\}\[\]\"\\]+'
 
 whitespace = #'\s+'
