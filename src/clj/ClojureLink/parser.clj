@@ -133,3 +133,6 @@
         :parser default-clojure-parser
         :start strtln
         :end endln})))
+
+(defn parse-clojure-files [& fs]
+  (pmap parse-clojure-file fs))
