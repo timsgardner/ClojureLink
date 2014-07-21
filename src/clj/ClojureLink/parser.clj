@@ -26,7 +26,7 @@
 
 ; hardcoded because everything's still broken:
 
-(def clojure-sexp-grammar  "/Users/timothygardner/code/ClojureLink/resources/instaparse/clojure-grammar-1.txt")
+(def clojure-sexp-grammar  "/Users/timothygardner/code/ClojureLink/resources/instaparse/clojure-sexp-grammar.txt")
 (def clojure-word-grammar  "/Users/timothygardner/code/ClojureLink/resources/instaparse/clojure-word-grammar.txt")
 
 
