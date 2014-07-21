@@ -1,4 +1,4 @@
-(ns clojurelink.parser
+(ns ClojureLink.parser
   (:use clojure.repl
         clojure.pprint
         clojure.data)
