@@ -114,6 +114,9 @@
                     :as argm}]
   (parser (file-section argm)))
 
+(defn parse-clojure-string [s]
+  (default-clojure-parser s))
+
 (defn parse-clojure-file 
   ([f]
      (parse-file*
