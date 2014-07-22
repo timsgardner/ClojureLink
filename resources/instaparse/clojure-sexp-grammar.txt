@@ -22,7 +22,8 @@ clr-type = #"\|(\|\||(?s).)*?\|"
 
 regex = '#' string
 
-metadata =  "^" (map | word | string)
+# why does this allow whitespace?!
+metadata =  "^" whitespace? (map | word | string)
 
 comment = #";.*"
 
