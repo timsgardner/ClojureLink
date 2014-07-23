@@ -2,7 +2,7 @@ top = tok-seq-H
 
 <tok-seq-H> = (whitespace? tok-H)* whitespace?
 
-<tok-H> = comment | parenthetical-H | string | word | escaped | regex | metadata | macro-things-H | deref | clr-type
+<tok-H> = comment | parenthetical-H | string | word | escaped | regex | clr-type
 
 <parenthetical-H> = list | vector | map | set | function-literal
 
@@ -22,39 +22,12 @@ string = "\"" (#"\\\""? #"((?!\\\")[^\"])*")* #"\\\""? "\""
 
 clr-type =  "|" (#"\|\|"? #"[^|]*")* #"\|\|"? "|"
 
-# #"\|(?:\|\||[^|])*?\|"
-
 regex = '#' string
-
-metadata =  "^" whitespace? (map | word | string)
 
 comment = #";.*"
 
 escaped = #'\\(\W|\w+)'
 
-word = !#"(#[\s\(\)\{\}\[\]\"_])|[\^\~\@\`\'\|\"]" #'[^;\s\(\)\{\}\[\]\"\\,]+'
-
-# ------------------------------------
-# I forget why these aren't words, seems like it would speed things up
-
-<macro-things-H> = quote | var-quote | ignore | syntax-quote | unquote | unquote-splicing 
-
-quote = "'"
-
-var-quote = "#'" 
-
-ignore = "#_"
-
-syntax-quote = '`' 
-
-unquote = '~' !'@' 
-
-unquote-splicing = '~@'
-
-# ------------------------------------
-
-deref = '@'
- 
-# ------------------------------------
+word = #"(?!#[\s\(\)\{\}\[\]\"])(@|'|#['_]|~@?|\^|[^;\s\(\)\{\}\[\]\"\\,]+)"
 
 whitespace = #'[\s,]+'
