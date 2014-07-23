@@ -20,7 +20,7 @@ function-literal = <'#('> tok-seq-H <')'>
 
 string = "\"" (#"\\\""? #"((?!\\\")[^\"])*")* #"\\\""? "\""
 
-clr-type =  "|" (#"\|\|"? #"((?!\|\|)[^|])*")* #"\|\|"? "|"
+clr-type =  "|" (#"\|\|"? #"[^|]*")* #"\|\|"? "|"
 
 # #"\|(?:\|\||[^|])*?\|"
 
@@ -32,9 +32,10 @@ comment = #";.*"
 
 escaped = #'\\(\W|\w+)'
 
-word = !#"(#[\s\(\)\{\}\[\]\"_])|[\^\~\@\`\'\|\"]" #'[^;\s\(\)\{\}\[\]\"\\]+'
+word = !#"(#[\s\(\)\{\}\[\]\"_])|[\^\~\@\`\'\|\"]" #'[^;\s\(\)\{\}\[\]\"\\,]+'
 
 # ------------------------------------
+# I forget why these aren't words, seems like it would speed things up
 
 <macro-things-H> = quote | var-quote | ignore | syntax-quote | unquote | unquote-splicing 
 
@@ -56,4 +57,4 @@ deref = '@'
  
 # ------------------------------------
 
-whitespace = #'\s+'
+whitespace = #'[\s,]+'
