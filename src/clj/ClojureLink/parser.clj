@@ -107,7 +107,8 @@
     (->> s
       (insta/parse g1)
       (insta/transform
-        {:word #(first (insta/parse g2 %))}))))
+        {:word #(first (insta/parse g2 %))
+         :string (fn [& ss] [:string (apply str ss)])}))))
 
 (defn parse-file* [{:keys [parser]
                     :or {parser default-clojure-parser}

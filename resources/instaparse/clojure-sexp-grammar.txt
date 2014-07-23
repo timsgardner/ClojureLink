@@ -16,20 +16,21 @@ set = <'#{'> tok-seq-H <'}'>
 
 function-literal = <'#('> tok-seq-H <')'>
 
-string = #"\"(\\\"|(?s).)*?\""
+# this abomination is strictly here because of that stupid alternation bug in java regexes
 
-clr-type = #"\|(\|\||(?s).)*?\|"
+string = "\"" (#"\\\""? #"((?!\\\")[^\"])*")* #"\\\""? "\""
+
+clr-type = #"\|(?:\|\||[^|])*?\|"
 
 regex = '#' string
 
-# why does this allow whitespace?!
 metadata =  "^" whitespace? (map | word | string)
 
 comment = #";.*"
 
 escaped = #'\\(\W|\w+)'
 
-word = !#"(#[\s\(\)\{\}\[\]\"_])|[\^\~\@\`\']" #'[^;\s\(\)\{\}\[\]\"\\]+'
+word = !#"(#[\s\(\)\{\}\[\]\"_])|[\^\~\@\`\'\|\"]" #'[^;\s\(\)\{\}\[\]\"\\]+'
 
 # ------------------------------------
 
