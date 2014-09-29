@@ -8,7 +8,7 @@ keyword = #":.*"
 
 (* This definition is laxer than usual because we've already eliminated a lot of annoying other cases by the time we get to this sub-grammar *)
 
-symbol = #"(?![\^'#`~0-9])[[*+!-_?/.]\w].*"
+symbol = #"(?![\^'#`~0-9:])[[*+!-_?/.]\w].*"
 
 character = #"\\.*"
 
